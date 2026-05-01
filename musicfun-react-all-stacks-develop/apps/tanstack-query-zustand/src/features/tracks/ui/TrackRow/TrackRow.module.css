@@ -1,0 +1,26 @@
+.tableRow {
+  cursor: pointer;
+  user-select: none;
+}
+
+.active {
+  background-color: var(--color-bg-interactive-secondary);
+}
+
+.draft {
+  opacity: 0.6;
+}
+
+.playing {
+  color: var(--color-accent);
+}
+
+.progress {
+  width: 183px;
+}
+
+.actions {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+}

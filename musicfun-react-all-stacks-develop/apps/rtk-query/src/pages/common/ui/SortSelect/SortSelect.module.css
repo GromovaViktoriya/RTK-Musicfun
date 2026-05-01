@@ -1,0 +1,15 @@
+.selectLabel {
+  display: flex;
+  flex-shrink: 0;
+  gap: 8px;
+  align-items: center;
+
+  min-width: 210px;
+
+  white-space: nowrap;
+}
+
+.select {
+  flex-shrink: 1;
+  min-width: 145px;
+}

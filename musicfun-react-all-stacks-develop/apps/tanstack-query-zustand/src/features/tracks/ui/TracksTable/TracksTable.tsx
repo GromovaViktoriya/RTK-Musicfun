@@ -1,0 +1,98 @@
+import type { ReactNode } from 'react'
+
+import {
+  type CurrentUserReaction,
+  Table,
+  TableBody,
+  TableHead,
+  TableHeaderCell,
+  TableRow,
+} from '@/shared/components'
+import { ClockIcon } from '@/shared/icons'
+import { VU } from '@/shared/utils'
+import { useTranslation } from 'react-i18next'
+
+type TableColumn = {
+  title: ReactNode
+  width?: string
+}
+
+export type TracksTableProps<T extends TrackRowData> = {
+  trackRows: T[]
+  renderTrackRow: (trackRow: T) => ReactNode
+}
+
+type ReactionsProps =
+  | {
+      likesCount: number
+      dislikesCount: number
+      currentUserReaction: CurrentUserReaction
+    }
+  | {
+      likesCount?: undefined
+      dislikesCount?: undefined
+      currentUserReaction?: undefined
+    }
+
+export type TrackRowData = {
+  index: number
+  image?: string
+  id: string
+  title: string
+  addedAt: string
+  artists: string[]
+  duration: number
+  ownerId: string
+  isPublished?: boolean
+} & ReactionsProps
+
+export const TracksTable = <T extends TrackRowData>({
+  trackRows,
+  renderTrackRow,
+}: TracksTableProps<T>) => {
+  const { t } = useTranslation()
+
+  const TABLE_COLUMNS: TableColumn[] = [
+    {
+      title: '#',
+      width: '40px',
+    },
+    {
+      title: t('tracks.table.track'),
+    },
+    {
+      title: '',
+    },
+    {
+      title: t('tracks.table.date_added'),
+      width: '120px',
+    },
+    {
+      title: t('tracks.table.actions'),
+      width: '150px',
+    },
+    {
+      title: <ClockIcon />,
+      width: '60px',
+    },
+  ]
+
+  if (!VU.isNotEmptyArray(trackRows)) {
+    return null
+  }
+
+  return (
+    <Table>
+      <TableHead>
+        <TableRow>
+          {TABLE_COLUMNS.map((column, index) => (
+            <TableHeaderCell key={index} style={{ width: column.width }}>
+              {column.title}
+            </TableHeaderCell>
+          ))}
+        </TableRow>
+      </TableHead>
+      <TableBody>{trackRows.map((trackRow) => renderTrackRow(trackRow))}</TableBody>
+    </Table>
+  )
+}

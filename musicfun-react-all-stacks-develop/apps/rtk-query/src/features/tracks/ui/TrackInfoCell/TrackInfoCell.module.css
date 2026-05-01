@@ -1,0 +1,99 @@
+.box {
+  display: flex;
+  gap: 21px;
+}
+
+.image {
+  position: relative;
+  flex-shrink: 0;
+  width: 52px;
+  height: 52px;
+  cursor: pointer;
+  transition:
+    transform 0.25s ease,
+    box-shadow 0.25s ease;
+}
+
+.image img {
+  object-fit: cover;
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+
+.info {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+
+  max-width: 280px;
+  min-width: 0;
+}
+
+.titleRow {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  min-width: 0;
+}
+
+.draftBadge {
+  flex-shrink: 0;
+  font-size: 11px;
+  line-height: 1;
+  padding: 2px 6px;
+  border-radius: 4px;
+  background-color: var(--color-text-secondary);
+  color: var(--color-bg-primary);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  font-weight: 600;
+}
+
+.title {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.title.playing {
+  color: var(--color-accent);
+}
+
+.artists {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.image:hover {
+  transform: scale(0.95);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+}
+
+.playButton {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  background-color: var(--color-bg-card);
+  border: none;
+  padding: 0;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.15s ease;
+}
+
+.boxHovered .playButton {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.playButton svg {
+  width: var(--font-size-xxl);
+  height: var(--font-size-xxl);
+}

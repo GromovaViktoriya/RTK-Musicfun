@@ -1,0 +1,16 @@
+.trackOverview {
+  margin-bottom: 46px;
+}
+
+.title {
+  margin-bottom: 18px;
+}
+
+.search {
+  margin-bottom: 24px;
+}
+
+.errorMessage {
+  text-align: center;
+  font-size: var(--font-size-xxxl);
+}
