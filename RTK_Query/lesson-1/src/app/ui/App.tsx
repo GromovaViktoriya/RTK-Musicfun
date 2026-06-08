@@ -7,10 +7,10 @@ function App() {
 
   return (
     <>
+        <Header/>
         <div className={s.layout}>
             <Routing />
         </div>
-        <Header/>
     </>
   )
 }
