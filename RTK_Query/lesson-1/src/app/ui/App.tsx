@@ -1,10 +1,16 @@
-import './App.css'
+import {Routing} from "@/common/routing";
+import {Header} from "@/common/components";
+import s from './App.module.css'
+
 
 function App() {
 
   return (
     <>
-      <h1>App</h1>
+        <div className={s.layout}>
+            <Routing />
+        </div>
+        <Header/>
     </>
   )
 }
