@@ -1,8 +1,13 @@
 //https://musicfun.it-incubator.app/api/1.0/
-
 // Во избежание ошибок импорт должен быть из `@reduxjs/toolkit/query/react`
 import {createApi, fetchBaseQuery} from '@reduxjs/toolkit/query/react'
-import type {PlaylistsResponse} from "@/features/playlists/api/playlistsApi.types.ts";
+import type {
+    BasePlaylistArgs,
+    CreatePlaylistArgs,
+    PlaylistData,
+    PlaylistsResponse, UpdatePlaylistArgs
+} from "@/features/playlists/api/playlistsApi.types.ts";
+
 
 // `createApi` - функция из `RTK Query`, позволяющая создать объект `API`
 // для взаимодействия с внешними `API` и управления состоянием приложения
@@ -15,6 +20,10 @@ export const playlistsApi = createApi({
         headers: {
             'API-KEY': import.meta.env.VITE_API_KEY,
         },
+        prepareHeaders: (headers) => {
+            headers.set('Authorization', `Bearer ${import.meta.env.VITE_ACCESS_TOKEN}`)
+            return headers
+        }
     }),
     // `endpoints` - метод, возвращающий объект с эндпоинтами для `API`, описанными
     // с помощью функций, которые будут вызываться при вызове соответствующих методов `API`
@@ -25,18 +34,23 @@ export const playlistsApi = createApi({
         fetchPlaylists: build.query<PlaylistsResponse, void>({
             query: () => `playlists`,
         }),
-        createPlaylist: build.mutation<any, any>({
-            query: (body) => {
-                return {
-                    url: `playlists`,
-                    method: 'post',
-                    body,
-                }
-            },
+        createPlaylist: build.mutation<{ data: PlaylistData }, BasePlaylistArgs<CreatePlaylistArgs>>({
+            query: body => ({ method: 'post', url: `playlists`, body,})
         }),
+        deletePlaylist: build.mutation<void, string>({
+            query: playlistId => ({method: 'delete', url: `playlists/${playlistId}`})
+        }),
+        updatePlaylist: build.mutation<void, { playlistId: string, body: BasePlaylistArgs<UpdatePlaylistArgs> }>({
+            query: ({playlistId, body}) => ({method: 'put', url: `playlists/${playlistId}`, body})
+        })
     }),
 })
 
 // `createApi` создает объект `API`, который содержит все эндпоинты в виде хуков,
 // определенные в свойстве `endpoints`
-export const { useFetchPlaylistsQuery, useCreatePlaylistMutation } = playlistsApi
+export const {
+    useFetchPlaylistsQuery,
+    useCreatePlaylistMutation,
+    useDeletePlaylistMutation,
+    useUpdatePlaylistMutation
+} = playlistsApi
