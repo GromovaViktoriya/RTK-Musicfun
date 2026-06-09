@@ -7,7 +7,7 @@ import type {
     PlaylistsResponse,
     UpdatePlaylistArgs
 } from "@/features/playlists/api/playlistsApi.types.ts";
-import {baseApi} from "@/features/playlists/api/baseApi.ts";
+import {baseApi} from "@/app/api/baseApi.ts";
 
 export const playlistsApi = baseApi.injectEndpoints({
     // `endpoints` - метод, возвращающий объект с эндпоинтами для `API`, описанными
