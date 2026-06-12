@@ -8,6 +8,7 @@ import type {
     UpdatePlaylistArgs
 } from "@/features/playlists/api/playlistsApi.types.ts";
 import {baseApi} from "@/app/api/baseApi.ts";
+import type {Images} from "@/common/types";
 
 export const playlistsApi = baseApi.injectEndpoints({
     // `endpoints` - метод, возвращающий объект с эндпоинтами для `API`, описанными
@@ -21,7 +22,7 @@ export const playlistsApi = baseApi.injectEndpoints({
             providesTags: ['Playlist'],
         }),
         createPlaylist: build.mutation<{ data: PlaylistData }, BasePlaylistArgs<CreatePlaylistArgs>>({
-            query: body => ({ method: 'post', url: `playlists`, body,}),
+            query: body => ({method: 'post', url: `playlists`, body,}),
             invalidatesTags: ['Playlist'],
         }),
         deletePlaylist: build.mutation<void, string>({
@@ -30,6 +31,19 @@ export const playlistsApi = baseApi.injectEndpoints({
         }),
         updatePlaylist: build.mutation<void, { playlistId: string, body: BasePlaylistArgs<UpdatePlaylistArgs> }>({
             query: ({playlistId, body}) => ({method: 'put', url: `playlists/${playlistId}`, body}),
+            invalidatesTags: ['Playlist'],
+        }),
+        uploadPlaylistCover: build.mutation<Images, { playlistId: string, file: File }>({
+            query: ({playlistId, file}) => {
+                const formData = new FormData()
+                formData.append('file', file)
+
+                return ({method: 'post', url: `playlists/${playlistId}/images/main`, body: formData})
+            },
+            invalidatesTags: ['Playlist'],
+        }),
+        deletePlaylistCover: build.mutation<void, { playlistId: string }>({
+            query: ({playlistId}) => ({method: 'delete', url: `playlists/${playlistId}/images/main`}),
             invalidatesTags: ['Playlist'],
         })
     }),
@@ -41,5 +55,7 @@ export const {
     useFetchPlaylistsQuery,
     useCreatePlaylistMutation,
     useDeletePlaylistMutation,
-    useUpdatePlaylistMutation
+    useUpdatePlaylistMutation,
+    useUploadPlaylistCoverMutation,
+    useDeletePlaylistCoverMutation
 } = playlistsApi
