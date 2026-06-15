@@ -1,5 +1,7 @@
 import {getPaginationPages} from '@/common/utils'
 import s from './Pagination.module.css'
+import {PaginationControls} from "@/common/components/Pagination/PaginationControls/PaginationControls.tsx";
+import {PageSizeSelector} from "@/common/components/Pagination/PageSizeSelector/PageSizeSelector.tsx";
 
 type Props = {
     currentPage: number
@@ -15,38 +17,8 @@ export const Pagination = ({currentPage, setCurrentPage, pagesCount, pageSize, c
 
     return (
         <div className={s.container}>
-            <div className={s.pagination}>
-                {pages.map((page, idx) =>
-                    page === '...' ? (
-                        <span className={s.ellipsis} key={`ellipsis-${idx}`}>...</span>
-                    ) : (
-                        <button
-                            key={page}
-                            className={
-                                page === currentPage
-                                    ? `${s.pageButton} ${s.pageButtonActive}`
-                                    : s.pageButton
-                            }
-                            onClick={() => page !== currentPage && setCurrentPage(Number(page))}
-                            disabled={page === currentPage}
-                            type="button"
-                        >
-                            {page}
-                        </button>
-                    )
-                )}
-            </div>
-            <label>
-                Show
-                <select value={pageSize} onChange={e => changePageSize(Number(e.target.value))}>
-                    {[2, 4, 8, 16, 20, 32].map(size => (
-                        <option value={size} key={size}>
-                            {size}
-                        </option>
-                    ))}
-                </select>
-                per page
-            </label>
+            <PaginationControls pages={pages} currentPage={currentPage} setCurrentPage={setCurrentPage}/>
+            <PageSizeSelector pageSize={pageSize} changePageSize={changePageSize}/>
         </div>
     )
 }
