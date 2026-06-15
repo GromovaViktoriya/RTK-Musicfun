@@ -2,7 +2,7 @@
 // Во избежание ошибок импорт должен быть из `@reduxjs/toolkit/query/react`
 import type {
     BasePlaylistArgs,
-    CreatePlaylistArgs,
+    CreatePlaylistArgs, FetchPlaylistsArgs,
     PlaylistData,
     PlaylistsResponse,
     UpdatePlaylistArgs
@@ -17,8 +17,8 @@ export const playlistsApi = baseApi.injectEndpoints({
     endpoints: build => ({
         // Типизация аргументов (<возвращаемый тип, тип query аргументов (`QueryArg`)>)
         // `query` по умолчанию создает запрос `get` и указание метода необязательно
-        fetchPlaylists: build.query<PlaylistsResponse, void>({
-            query: () => `playlists`,
+        fetchPlaylists: build.query<PlaylistsResponse, FetchPlaylistsArgs>({
+            query: (params) => ({url: `playlists`, params}),
             providesTags: ['Playlist'],
         }),
         createPlaylist: build.mutation<{ data: PlaylistData }, BasePlaylistArgs<CreatePlaylistArgs>>({
@@ -28,7 +28,7 @@ export const playlistsApi = baseApi.injectEndpoints({
         deletePlaylist: build.mutation<void, string>({
             query: playlistId => ({method: 'delete', url: `playlists/${playlistId}`}),
             invalidatesTags: ['Playlist'],
-        }),
+        }),/**/
         updatePlaylist: build.mutation<void, { playlistId: string, body: BasePlaylistArgs<UpdatePlaylistArgs> }>({
             query: ({playlistId, body}) => ({method: 'put', url: `playlists/${playlistId}`, body}),
             invalidatesTags: ['Playlist'],
