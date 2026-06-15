@@ -10,7 +10,7 @@ export const PlaylistsPage = () => {
 
     const [search, setSearch] = useState('')
     const [currentPage, setCurrentPage] = useState(1)
-    const [pageSize, setPageSize] = useState(2)
+    const [pageSize, setPageSize] = useState(20)
 
     const debounceSearch = useDebounceValue(search)
 
