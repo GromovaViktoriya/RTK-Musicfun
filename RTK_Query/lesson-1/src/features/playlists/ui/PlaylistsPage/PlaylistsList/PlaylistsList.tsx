@@ -5,16 +5,17 @@ import {useForm} from "react-hook-form";
 import {useState} from "react";
 import {useDeletePlaylistMutation} from "@/features/playlists/api/playlistsApi.ts";
 import s from "@/features/playlists/ui/PlaylistsPage/PlaylistsList/PlaylistsList.module.css";
+import {PlaylistsSkeleton} from "../PlaylistsSkeleton/PlaylistsSkeleton";
 
 type Props = {
     playlists: PlaylistData[]
     isPlaylistsLoading: boolean
 }
 
-export const PlaylistsList = ({ playlists, isPlaylistsLoading }: Props) => {
+export const PlaylistsList = ({playlists, isPlaylistsLoading}: Props) => {
     const [playlistId, setPlaylistId] = useState<string | null>(null)
 
-    const { register, handleSubmit, reset } = useForm<UpdatePlaylistArgs>()
+    const {register, handleSubmit, reset} = useForm<UpdatePlaylistArgs>()
 
     const [deletePlaylist] = useDeletePlaylistMutation()
 
@@ -40,30 +41,39 @@ export const PlaylistsList = ({ playlists, isPlaylistsLoading }: Props) => {
 
     return (
         <div className={s.items}>
-        {!playlists.length && !isPlaylistsLoading && <h2>Playlists not found</h2>}
-        {playlists.map(playlist => {
+            {!playlists.length && !isPlaylistsLoading && <h2>Playlists not found</h2>}
 
-            const isEditing = playlistId === playlist.id
-            return (
-                <div className={s.item} key={playlist.id}>
-                    {isEditing ? (
-                        <EditPlaylistForm
-                            playlistId={playlistId}
-                            handleSubmit={handleSubmit}
-                            register={register}
-                            editPlaylist={editPlaylistHandler}
-                            setPlaylistId={setPlaylistId}
-                        />
-                    ) : (
-                        <PlaylistItem
-                            playlist={playlist}
-                            deletePlaylist={deletePlaylistHandler}
-                            editPlaylist={editPlaylistHandler}
-                        />
-                    )}
-                </div>
-            )
-        })}
-    </div>
+            {isPlaylistsLoading && !playlists.length && (
+                Array.from({length: 8}).map((_, index) => (
+                    <div className={s.item} key={index}>
+                        <PlaylistsSkeleton/>
+                    </div>
+                ))
+            )}
+
+            {playlists.map(playlist => {
+                const isEditing = playlistId === playlist.id
+                return (
+                    <div className={s.item} key={playlist.id}>
+                        {isEditing ? (
+                            <EditPlaylistForm
+                                playlistId={playlistId}
+                                handleSubmit={handleSubmit}
+                                register={register}
+                                editPlaylist={editPlaylistHandler}
+                                setPlaylistId={setPlaylistId}
+                            />
+                        ) : (
+                            <PlaylistItem
+                                playlist={playlist}
+                                deletePlaylist={deletePlaylistHandler}
+                                editPlaylist={editPlaylistHandler}
+                            />
+                        )
+                        }
+                    </div>
+                )
+            })}
+        </div>
     )
 }

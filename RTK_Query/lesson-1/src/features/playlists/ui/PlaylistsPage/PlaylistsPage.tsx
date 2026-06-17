@@ -6,6 +6,7 @@ import {useDebounceValue} from "@/common/hooks";
 import {Pagination} from "@/common/components";
 import {PlaylistsList} from "@/features/playlists/ui/PlaylistsPage/PlaylistsList/PlaylistsList.tsx";
 
+
 export const PlaylistsPage = () => {
 
     const [search, setSearch] = useState('')
@@ -35,7 +36,7 @@ export const PlaylistsPage = () => {
     return (
         <div className={s.container}>
             <h1>Playlists page</h1>
-            <CreatePlaylistForm/>
+            <CreatePlaylistForm setCurrentPage={setCurrentPage}/>
             <input
                 type="search"
                 placeholder={'Search playlist by title'}
