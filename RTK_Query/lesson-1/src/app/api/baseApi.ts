@@ -1,6 +1,5 @@
 import {createApi, fetchBaseQuery} from '@reduxjs/toolkit/query/react'
 import {handleErrors} from "@/common/utils";
-import type {FetchBaseQueryError} from "@reduxjs/toolkit/query";
 
 
 export const baseApi = createApi({
@@ -21,8 +20,10 @@ export const baseApi = createApi({
             },
         })(args, api, extraOptions)
 
+        if (result.error) {
+            handleErrors(result.error)
+        }
 
-        handleErrors(result.error as FetchBaseQueryError)
         return result
     },
 
