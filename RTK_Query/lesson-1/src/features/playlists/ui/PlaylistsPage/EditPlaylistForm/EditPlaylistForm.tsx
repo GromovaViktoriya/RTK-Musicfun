@@ -29,9 +29,9 @@ export const EditPlaylistForm = ({
                     attributes: data
                 }
             }
-        }).then(() => {
-            setPlaylistId(null)
         })
+        //для optimistic update убираем .then и закрываем форму не дожидаясь запроса
+        setPlaylistId(null)
     }
 
     return (
