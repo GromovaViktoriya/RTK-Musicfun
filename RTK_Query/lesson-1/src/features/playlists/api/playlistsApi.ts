@@ -18,15 +18,15 @@ export const playlistsApi = baseApi.injectEndpoints({
         // Типизация аргументов (<возвращаемый тип, тип query аргументов (`QueryArg`)>)
         // `query` по умолчанию создает запрос `get` и указание метода необязательно
         fetchPlaylists: build.query<PlaylistsResponse, FetchPlaylistsArgs>({
-            query: (params) => ({url: `playlists`, params}),
+            query: (params) => ({url: `/playlists`, params}),
             providesTags: ['Playlist'],
         }),
         createPlaylist: build.mutation<{ data: PlaylistData }, BasePlaylistArgs<CreatePlaylistArgs>>({
-            query: body => ({method: 'post', url: `playlists`, body,}),
+            query: body => ({method: 'post', url: `/playlists`, body,}),
             invalidatesTags: ['Playlist'],
         }),
         deletePlaylist: build.mutation<void, string>({
-            query: playlistId => ({method: 'delete', url: `playlists/${playlistId}`}),
+            query: playlistId => ({method: 'delete', url: `/playlists/${playlistId}`}),
             invalidatesTags: ['Playlist'],
         }),/**/
         updatePlaylist: build.mutation<void, { playlistId: string, body: BasePlaylistArgs<UpdatePlaylistArgs> }>({
@@ -56,7 +56,7 @@ export const playlistsApi = baseApi.injectEndpoints({
                     })
                 }
             },
-            query: ({playlistId, body}) => ({method: 'put', url: `playlists/${playlistId}`, body}),
+            query: ({playlistId, body}) => ({method: 'put', url: `/playlists/${playlistId}`, body}),
             invalidatesTags: ['Playlist'],
         }),
         uploadPlaylistCover: build.mutation<Images, { playlistId: string, file: File }>({
@@ -64,12 +64,12 @@ export const playlistsApi = baseApi.injectEndpoints({
                 const formData = new FormData()
                 formData.append('file', file)
 
-                return ({method: 'post', url: `playlists/${playlistId}/images/main`, body: formData})
+                return ({method: 'post', url: `/playlists/${playlistId}/images/main`, body: formData})
             },
             invalidatesTags: ['Playlist'],
         }),
         deletePlaylistCover: build.mutation<void, { playlistId: string }>({
-            query: ({playlistId}) => ({method: 'delete', url: `playlists/${playlistId}/images/main`}),
+            query: ({playlistId}) => ({method: 'delete', url: `/playlists/${playlistId}/images/main`}),
             invalidatesTags: ['Playlist'],
         })
     }),
