@@ -2,13 +2,17 @@
 // Во избежание ошибок импорт должен быть из `@reduxjs/toolkit/query/react`
 import type {
     BasePlaylistArgs,
-    CreatePlaylistArgs, FetchPlaylistsArgs,
+    CreatePlaylistArgs,
+    FetchPlaylistsArgs,
     PlaylistData,
     PlaylistsResponse,
     UpdatePlaylistArgs
 } from "@/features/playlists/api/playlistsApi.types.ts";
 import {baseApi} from "@/app/api/baseApi.ts";
 import type {Images} from "@/common/types";
+import {playlistCreateResponseSchema, playlistsResponseSchema} from "@/features/playlists/model";
+import {imagesSchema} from "@/common/schemas";
+import {withZodCatch} from "@/common/utils/withZodCatch.ts";
 
 export const playlistsApi = baseApi.injectEndpoints({
     // `endpoints` - метод, возвращающий объект с эндпоинтами для `API`, описанными
@@ -19,10 +23,13 @@ export const playlistsApi = baseApi.injectEndpoints({
         // `query` по умолчанию создает запрос `get` и указание метода необязательно
         fetchPlaylists: build.query<PlaylistsResponse, FetchPlaylistsArgs>({
             query: (params) => ({url: `/playlists`, params}),
+            ...withZodCatch(playlistsResponseSchema),
+            // skipSchemaValidation: process.env.NODE_ENV === 'production',
             providesTags: ['Playlist'],
         }),
         createPlaylist: build.mutation<{ data: PlaylistData }, BasePlaylistArgs<CreatePlaylistArgs>>({
             query: body => ({method: 'post', url: `/playlists`, body,}),
+            ...withZodCatch(playlistCreateResponseSchema),
             invalidatesTags: ['Playlist'],
         }),
         deletePlaylist: build.mutation<void, string>({
@@ -66,6 +73,7 @@ export const playlistsApi = baseApi.injectEndpoints({
 
                 return ({method: 'post', url: `/playlists/${playlistId}/images/main`, body: formData})
             },
+            ...withZodCatch(imagesSchema),
             invalidatesTags: ['Playlist'],
         }),
         deletePlaylistCover: build.mutation<void, { playlistId: string }>({
