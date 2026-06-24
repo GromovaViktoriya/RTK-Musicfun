@@ -32,6 +32,10 @@ export const CreatePlaylistForm = () => {
                 <input {...register('title')} placeholder={'title'}/>
                 {errors.title && <span className={s.error}>{errors.title.message}</span>}
             </div>
+            <div>
+                <input {...register('description')} placeholder={'description'}/>
+                {errors.description && <span className={s.error}>{errors.description.message}</span>}
+            </div>
             <button>create playlist</button>
         </form>
     )

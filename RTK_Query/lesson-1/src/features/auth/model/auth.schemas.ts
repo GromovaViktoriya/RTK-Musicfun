@@ -7,6 +7,6 @@ export const meResponseSchema = z.object({
 
 
 export const loginResponseSchema = z.object({
-    refreshToken: z.string(),
-    accessToken: z.string(),
+    refreshToken: z.jwt(),
+    accessToken: z.jwt(),
 })
